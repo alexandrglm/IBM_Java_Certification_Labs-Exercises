@@ -1,4 +1,22 @@
 # **05-001 Final Project Overview**
+---
+
+## Classes
+
+1.  Item
+2.  Inventory
+3.  GroceryShop
+4.  Menu
+5.  Main
+
+
+![](./05-001_klasses_all.png)
+
+
+
+---
+
+# Assesment Details
 
 ## **Learning Objectives**
 

@@ -1,0 +1,87 @@
+@startuml
+
+package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
+
+    class Item {
+
+        - itemName : String
+        - itemPrice : String
+        - itemQuantity : String
+
+        + Item(itemName : String, itemPrice : String, itemQuantity : String)
+
+        + getItemName() : String
+        + getItemPrice() : String
+        + getItemQuantity() : String
+        + setItemName(n : String) : void
+        + setItemPrice(p : String) : void
+        + setItemQuantity(q : String) : void
+
+        + priceParser() : float
+        + quantityParser() : int
+        + redondeo(x : float) : float
+    }
+
+    class Inventory {
+
+        - items : ArrayList[][]<Item>
+
+        + Inventory()
+
+        + createItem(itemName : String, price : String, quantity : String) : void
+        + readAllInventory() : void
+        + findByName(itemName : String) : int
+        + findByIndex(choiceIdx : int) : int
+        + deleteItem(idx : int) : void
+
+        + get(idx : int) : Item
+        + averagePrice() : float
+        + filterByPrice(maxPrice : float) : void
+
+        + getItems() : ArrayList[][]<Item>
+    }
+
+    class GroceryShop {
+
+        - inventory : Inventory
+        - sc : Scanner
+
+        + GroceryShop(inventory : Inventory, sc : Scanner)
+        + buyMenu() : void
+    }
+
+    class Menu {
+
+        - inventory : Inventory
+        - shop : GroceryShop
+        - sc : Scanner
+
+        + Menu(inventory : Inventory, shop : GroceryShop, sc : Scanner)
+
+        + mainMenu() : void
+        + inventoryMenu() : void
+
+        + createItem() : void
+        + readItem() : void
+        + readItems() : void
+        + updateItem() : void
+        + deleteItem() : void
+
+        + searchItem() : void
+        + filterItems() : void
+    }
+
+
+    class Main {
+
+        + main(args : String[] args) : void
+
+    }
+
+    Inventory "1" *-- "MANY" Item
+    GroceryShop --> Inventory
+    Menu --> Inventory
+    Menu --> GroceryShop
+
+}
+@enduml
