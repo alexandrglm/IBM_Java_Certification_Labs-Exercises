@@ -10,7 +10,7 @@
 5.  Main
 
 
-![](./05-001_klasses_all.png)
+![](./exercise/05-001_klasses_all.png)
 
 
 
