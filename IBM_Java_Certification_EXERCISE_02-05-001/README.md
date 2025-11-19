@@ -10,7 +10,30 @@
 5.  Main
 
 
+
+
 ![](./exercise/05-001_klasses_all.png)
+
+---
+
+## Requirements
+|      |      |
+| ---- | ---- |
+| Task 1: String array of items | `Inventory`, `items[][]`, `getItems()`|
+| Task 2: float array of unit price | `Items`, `Inventory`, `items[][]`, `priceParser()`, `redondeo()` |
+| Task 3: Import and create a Scanner object| `Main`, `Menu`, `GroceryShop`,  |
+| Task 4: Create infinite loop | `Menu`, `mainMenu()`, `inventoryMenu()` - `Grocery`, `buyMenu()` |
+| Task 5: Create inner infinite loop for purchases | `GroceryShop`, `buyMenu()` |
+| Task 6: Get user input for item name | `Inventory`, `findByName()`, `findByIndex()` |
+| Task 7: Get the item price based on the index position | `Inventory`, `get()`, `getItems()` |
+| Task 8: Get the item quantity and find item price | `Inventory`, `get()`, `getItems()` |
+| Task 9: Print the total price | `GroceryShop`, `buyMenu()` |
+| Task 10: Implement Item Search Functionality | `Inventory`, `findByName()`, `findByIndex()` |
+| Task 11: Calculate Average Price | `Inventory`, `averagePrice()` |
+| Task 12: Filter Items Below a Certain Price | `Inventory`, `filterByPrice()` |
+| Task 13: Total the Bill with Discounts** | `GroceryShop` |
+| Task 14: Inventory Management | `Inventory` |
+
 
 
 
