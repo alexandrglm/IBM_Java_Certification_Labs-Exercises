@@ -2,13 +2,13 @@
 
 package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
 
-    class Item {
+    class Items {
 
         - itemName : String
         - itemPrice : String
         - itemQuantity : String
 
-        + Item(itemName : String, itemPrice : String, itemQuantity : String)
+        + Items(itemName : String, itemPrice : String, itemQuantity : String)
 
         + getItemName() : String
         + getItemPrice() : String
@@ -19,12 +19,12 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
 
         + priceParser() : float
         + quantityParser() : int
-        + redondeo(itemPrice : float) : float
+        + {static} redondeo(itemPrice : float) : float
     }
 
     class Inventory {
 
-        - items : ArrayList[][]<Item>
+        - items : ArrayList<Item>
 
         + Inventory()
 
@@ -38,11 +38,11 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
         + averagePrice() : float
         + filterByPrice(maxPrice : float) : void
 
-        + hasStock(idx : int, choiceQuantity : int) : void
-        + reduceStock(idx : int, reduceQuantity : int) : void
-        + updateStock(idx : int, updateQuantity : int) : void
+        + hasStock(idx : int, choiceQuantity : int) : boolean
+        + reduceStock(idx : int, reduceQuantity : int) : boolean
+        + updateStock(idx : int, updateQuantity : int) : boolean
 
-        + getItems() : ArrayList[][]<Item>
+        + getItems() : ArrayList<Item>
     }
 
     class GroceryShop {
@@ -52,7 +52,7 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
 
         + GroceryShop(inventory : Inventory, sc : Scanner)
         + buyMenu() : void
-        - finishCart() : void
+        - finishCart(cartList : ArrayList<String>, totalBill : float) : void
     }
 
     class Menu {
@@ -64,7 +64,7 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
         + Menu(inventory : Inventory, shop : GroceryShop, sc : Scanner)
 
         + mainMenu() : void
-        + inventoryMenu() : void
+        - inventoryMenu() : void
 
         + createItem() : void
         + readItem() : void
@@ -75,7 +75,7 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
         + searchItem() : void
         + filterItems() : void
 
-        + prettyExit() : void
+        + {static} prettyExit() : void
     }
 
 
@@ -85,10 +85,11 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
 
     }
 
-    Inventory "1" *-- "MANY" Item
+    Inventory "1" *-- "MANY" Items
     GroceryShop --> Inventory
     Menu --> Inventory
     Menu --> GroceryShop
 
 }
+
 @enduml
