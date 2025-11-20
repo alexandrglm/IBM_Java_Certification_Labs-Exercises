@@ -39,6 +39,10 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
         + averagePrice() : float
         + filterByPrice(maxPrice : float) : void
 
+        + hasStock(idx : int, choiceQuantity : int) : void
+        + reduceStock(idx : int, reduceQuantity : int) : void
+        + updateStock(idx : int, updateQuantity : int) : void
+
         + getItems() : ArrayList[][]<Item>
     }
 
