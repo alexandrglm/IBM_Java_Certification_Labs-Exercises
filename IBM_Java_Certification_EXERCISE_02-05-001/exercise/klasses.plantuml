@@ -52,7 +52,7 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
 
         + GroceryShop(inventory : Inventory, sc : Scanner)
         + buyMenu() : void
-        * finishCart() : void
+        - finishCart() : void
     }
 
     class Menu {
