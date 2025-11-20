@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 public class Menu {
 
-
     // inits
     private Scanner sc;
     private Inventory inventory;
@@ -41,55 +40,69 @@ public class Menu {
         6. Salir
         
         */
-        System.out.println("\n -_- GROCERY STORE -_-");
-        System.out.println("  1 - INVENTORY");
-        System.out.println("  2 - BUY");
-        System.out.println("  3 - SEARCH ITEMS FROM INVENTORY");
-        System.out.println("  4 - FILTER ITEMS BY PRICE");
-        System.out.println("  5 - AVERAGE PRICE FROM INVENTORY TODAY");
-        System.out.println("  6 - EXIT");
-
-        // Scanner String choice - if "1" || menuChoice.equalsIgnoringCase("blablabla") , or contains()
-        String menuChoice = sc.nextLine();
-
-
-        try {
-
-            // IF ELSE IF
-            if (menuChoice.equals("1") || menuChoice.toUpperCase().contains("INVENTORY")) {
-
-                return;
-            } else if (menuChoice.equals("2") || menuChoice.toUpperCase().contains("BUY")) {
-
-                return;
-            } else if (menuChoice.equals("3") || menuChoice.toUpperCase().contains("SEARCH")) {
-
-                return;
-            } else if (menuChoice.equals("4") || menuChoice.toUpperCase().contains("FILTER"))  {
-
-                return;
-            } else if (menuChoice.equals("5") || menuChoice.toUpperCase().contains("AVERAGE")) {
-
-                return;
-            } else if (menuChoice.equals("6") || menuChoice.toUpperCase().contains("EXIT")) {
-
-                return;
-            
-            } else {
-
-                System.out.println("\n\n   [!]  Please, enter a valid option!");
-                // pending a continue statement
-            }
-
-
-        } catch (Exception e) {
-
-            System.out.println("\n\n    [EXCEPTION!] An error ocurred: " + e);
         
-        } finally {
+        while(true) {  // AÑADIDO: Bucle while para poder usar break
+            
+            System.out.println("\n -_- GROCERY STORE -_-");
+            System.out.println("  1 - INVENTORY");
+            System.out.println("  2 - BUY");
+            System.out.println("  3 - SEARCH ITEMS FROM INVENTORY");
+            System.out.println("  4 - FILTER ITEMS BY PRICE");
+            System.out.println("  5 - AVERAGE PRICE FROM INVENTORY TODAY");
+            System.out.println("  6 - EXIT");
 
-            sc.close();
-        }
+            // Scanner String choice - if "1" || menuChoice.equalsIgnoringCase("blablabla") , or contains()
+            String menuChoice = sc.nextLine();
+
+
+            try {
+
+                // IF ELSE IF
+                if (menuChoice.equals("1") || menuChoice.toUpperCase().contains("INVENTORY")) {
+                   
+                    inventoryMenu();
+        
+                } else if (menuChoice.equals("2") || menuChoice.toUpperCase().contains("BUY")) {
+                    
+                    shop.buyMenu();
+        
+                } else if (menuChoice.equals("3") || menuChoice.toUpperCase().contains("SEARCH")) {
+                    
+                    searchItem();
+                
+                } else if (menuChoice.equals("4") || menuChoice.toUpperCase().contains("FILTER"))  {
+                    
+                    filterItem();
+                
+                } else if (menuChoice.equals("5") || menuChoice.toUpperCase().contains("AVERAGE")) {
+                    
+                   float average = inventory.averagePrice();
+                   
+                   
+                   System.out.println(
+                    "\n\n====================\n  Average Price for all Products : " + Items.redondeo(average) +
+                    "\n===================");
+                
+                } else if (menuChoice.equals("6") || menuChoice.toUpperCase().contains("EXIT")) {
+
+                    System.out.println("\nThanks for your visit! Bye!");
+                    break; 
+                    
+                } else {
+
+                    System.out.println("\n\n   [!]  Please, enter a valid option!");
+                    // pending a continue statement
+                }
+
+
+            } catch (Exception e) {
+            
+                System.out.println("\n\n    [EXCEPTION!] An error ocurred: " + e.getMessage());
+            
+            }
+        
+        } // FIN while
+    
     }
 
 
@@ -127,24 +140,34 @@ public class Menu {
                 // IF ELSE IF
                 if (menuChoice.equals("1")) {
 
-                    return;
+                    createItem();
+                    break;
 
                 } else if (menuChoice.equals("2")) {
 
-                    return;
+                    readItem();
+                    break;
+                    
                 } else if (menuChoice.equals("3")) {
 
-                    return;
+                    readItems();
+                    break;
+                    
                 } else if (menuChoice.equals("4")) {
 
-                    return;
+                    updateItem();
+                    break;
+                    
                 } else if (menuChoice.equals("5")) {
 
-                    return;
+                    deleteItem();
+                    break;
+                    
                 } else if (menuChoice.equals("6") || menuChoice.toUpperCase().contains("EXIT")) {
 
-                    return;
-                
+                    prettyExit();
+                    return; 
+
                 } else {
 
                     System.out.println("\n\n   [!]  Please, enter a valid option!");
@@ -153,93 +176,280 @@ public class Menu {
 
             } catch (Exception e) {
 
-                System.out.println("\n\n    [EXCEPTION!] An error ocurred: " + e);
+                System.out.println("\n\n    [EXCEPTION!] An error ocurred: " + e.getMessage());
         
-            } finally {
-
-                sc.close();
             }
+            
+        } // FIN while
 
+    }
+
+
+    // METHODS like CRUD
+    
+    // createItem()
+    public void createItem(){
+
+        System.out.println("\n\n INVENTORY TOOLS:   Add new product");
+        
+        System.out.println("\n   -> Product Name? : ");
+        String choiceName = sc.nextLine();
+        if(choiceName.toUpperCase().strip().contains("EXIT")){
+        
+            prettyExit();
+            return;
+        
         }
 
+        System.out.println("\n   -> Product Price (includes .00 decimals) ? : ");
+        String choicePrice = sc.nextLine();
 
-        // METHODS like CRUD
+        System.out.println("\n   -> How many single products will be added to stock  ? : ");
+        String choiceQuantity = sc.nextLine();
+
+        // confirmation to write data
+        System.out.println("\n\n[WRITE DATA CONFIRMATION]\n");
+        System.out.println("        Name: " + choiceName);
+        System.out.println("        Price: " + choicePrice + " €");
+        System.out.println("        Stock: " + choiceQuantity + " units");
+        System.out.println("\n Is correct? (yes/no) : ");
         
-        // createItem()
-        public void createItem(){
-
-            System.out.println("\n\n INVENTORY TOOLS:   Add new product");
-            
-            System.out.println("\n   -> Product Name? : ");
-            String choiceName = sc.nextLine();
-
-            System.out.println("\n   -> Product Price (includes .00 decimals) ? : ");
-            String choicePrice = sc.nextLine();
-
-            System.out.println("\n   -> How many single products will be added to stock  ? : ");
-            String choiceQuantity = sc.nextLine();
+        String choiceConfirmation = sc.nextLine();
+        if(!choiceConfirmation.toUpperCase().contains("Y")) {
+        
+            System.out.println("\n Operation Cancelled\n");
+            inventoryMenu();
+        
+        } else {
 
             inventory.createItem(choiceName, choicePrice, choiceQuantity);
-
-
-
+            System.out.println("\n Data saved!\n");
+            inventoryMenu();
+        
         }
+    
 
-        // readItem()
-        public void readItem(){
+    }
+
+    // readItem()
+    public void readItem(){
+        
+        System.out.println("\n\n INVENTORY TOOLS:   Find ONE Item");
+        System.out.println("\n   -> Type the product name: ");
+        String choiceName = sc.nextLine();
+
+        if(choiceName.toUpperCase().strip().contains("EXIT")){
+        
+            prettyExit();
+            return;
+        
+        }
+        
+        int indexFound = inventory.findByName(choiceName);
+        
+        if (indexFound != -1) {
+
+            Items item = inventory.get(indexFound);
+
+            System.out.println("\n[+] Item found:");
+            System.out.println("  Name: " + item.getItemName());
+            System.out.println("  Price: " + item.getItemPrice() + " €");
+            System.out.println("  Stock: " + item.getItemQuantity() + " units");
+            System.out.println();
+
+            inventoryMenu();
+        
+        } else {
+
+            System.out.println("\n[!] Item not found.");
+            inventoryMenu();
+        
+        }
+        
+    }
+    
+    // readItems()
+    public void readItems() {
+
+        System.out.println("\n\n INVENTORY TOOLS:   Show Full Inventory");
+        inventory.readAllInventory();
+        
+        System.out.println();
+        inventoryMenu();
+
+    }
+
+    // updateItems()
+    public void updateItem(){
+
+        System.out.println("\n\n INVENTORY TOOLS:   Update an Item");
+        inventory.readAllInventory();
+        System.out.println("\n   -> Type the item number to update: ");
+        
+        String choiceUpdate = sc.nextLine();
+        
+        if(choiceUpdate.toUpperCase().strip().contains("EXIT")){
+        
+            prettyExit();
+            return;
+        
+        }
+        int itemNumber = Integer.parseInt(choiceUpdate);
+        
+        int indexUpdate = inventory.findByIndex(itemNumber);
+        
+        if (indexUpdate == -1) {
             
-            // pending
+            System.out.println("\n  [!] Invalid item number.");
+            return;
+        
+        }
+        
+        Items item = inventory.get(indexUpdate);
+        
+        System.out.println("\nUpdating: " + item.getItemName());
+        System.out.println("Leave blank to keep current values.");
+        
+        System.out.print("New name [" + item.getItemName() + "]: ");
+        String choiceNewName = sc.nextLine().strip();
+
+        if (!choiceNewName.isEmpty()) {
+
+            item.setItemName(choiceNewName);
+
+        }
+        
+        System.out.print("New price [" + item.getItemPrice() + " €]: ");
+        String newPrice = sc.nextLine().strip();
+        
+        if (!newPrice.isEmpty()) {
+        
+            item.setItemPrice(newPrice);
+        
+        }
+        
+        System.out.print("New quantity [" + item.getItemQuantity() + " units]: ");
+        String newQuantity = sc.nextLine().strip();
+
+        if (!newQuantity.isEmpty()) {
+        
+            item.setItemQuantity(newQuantity);
+        
+        }
+        
+        System.out.println("\n[+] Item updated successfully!");
+        inventoryMenu();
+
+    }
+
+    // deleteItem()
+    public void deleteItem(){
+
+        System.out.println("\n\n INVENTORY TOOLS:   Delete a product");
+        inventory.readAllInventory();
+        System.out.println("====================================");
+        System.out.println("\n Type the item number to be deleted: ");
+
+        String choiceDelete = sc.nextLine();
+        if(choiceDelete.toUpperCase().strip().contains("EXIT")){
+        
+            prettyExit();
+            return;
+        
+        }
+        int itemNumber = Integer.parseInt(choiceDelete);
+        int indexDelete = inventory.findByIndex(itemNumber);
+        
+        if (indexDelete == -1) {
             
-        }
-        // readItems()
-        public void readItems() {
-
-        }
-
-        // updateItems()
-        public void updateItem(){
-
+            System.out.println("\n[!] Invalid item number.");
+            return;
+        
         }
 
-        // deleteItem()
-        public void deleteItem(){
-
-
-            System.out.println("\n\n INVENTORY TOOLS:   Delete a product\n");
-            inventory.readAllInventory();
-            System.out.println("\n Type the product to be deleted: ");
-
-            // PENDING FIX
-            String choiceDelete = Integer.parseInt(sc.nextLine());
-            
-            int indexDelete = inventory.findByIndex(choiceDelete);
-            // PENDING VALIDATION
+        System.out.println("\n\n[DELETE DATA CONFIRMATION]");
+        System.out.println("\n Are you sure to delete this product from inventory? (yes/no) : ");
+    
+        String choiceConfirmation = sc.nextLine();
+        
+        if(!choiceConfirmation.toUpperCase().contains("Y")) {
+        
+            prettyExit();
+            return;
+        
+        } else {
 
             inventory.deleteItem(indexDelete);
+            System.out.println("\nProduct Deleted!");
+
+            System.out.println();
+            inventoryMenu();
+        }
+
+    }
+
+
+    // searchItem()
+    public void searchItem(){
+
+        System.out.println("\n\n INVENTORY TOOLS:   Search Items\n");
+        System.out.println("\n   -> Type search term: ");
+        String searchTerm = sc.nextLine();
+
+        if(searchTerm.toUpperCase().strip().contains("EXIT")) {
+
+            prettyExit();
+            return;
+        }
+        
+        int indexFound = inventory.findByName(searchTerm);
+        
+        try{
+
+            if (indexFound != -1) {
+
+                Items item = inventory.get(indexFound -1);
+                
+                System.out.println("\n[+] Item found:");
+                System.out.println(
+                    "  " + (indexFound + 1) + ") " + item.getItemName() + 
+                    " | Price: " + item.getItemPrice() + " €" + 
+                    " | Stock: " + item.getItemQuantity());
+            
+            } else {
+            
+                System.out.println("\n[!] No items found matching '" + searchTerm + "'");
+            
+            }
+        
+        } catch (IndexOutOfBoundsException ioobe) {
+
+            System.out.println("Please, type a product name, blank values not allowed!");
+            searchItem();
 
         }
 
+    }
+   
+    // filterItem()
+    public void filterItem(){
 
-        // searchItem()
-        public void serchItem(){
+        System.out.println("\n\n INVENTORY TOOLS:   Filter Items by maxPrice\n");
+        System.out.println("\n Type the maximum price: ");
+        String choiceMaxPrice = sc.nextLine();
 
-            // pending
+        float maxPrice = Float.parseFloat(choiceMaxPrice);
 
-        }
-       
-        // filterItem()
-        public void filterItem(){
+        inventory.filterByPrice(maxPrice);
 
-            System.out.println("\n\n INVENTORY TOOLS:   Filter Items by maxPrice\n");
-            System.out.println("\n Type the product to be deleted: ");
-            String choiceMaxPrice = sc.nextLine();
- 
-            float maxPrice = Float.parseFloat(choiceMaxPrice);
-
-            inventory.filterByPrice(maxPrice);
+    }
 
 
+    // ExitMenusPretty func
+    public static void prettyExit() {
 
-        }
+        System.out.println("\n   ~ Operation Cancelled ~\n");
+
+    }
 
 }

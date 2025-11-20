@@ -13,14 +13,13 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
         + getItemName() : String
         + getItemPrice() : String
         + getItemQuantity() : String
-        + setItemName(n : String) : void
-        + setItemPrice(p : String) : void
-        + setItemQuantity(q : String) : void
+        + setItemName(itemName : String) : void
+        + setItemPrice(itemPrice : String) : void
+        + setItemQuantity(itemQuantity : String) : void
 
         + priceParser() : float
         + quantityParser() : int
-        + stingParser() : String
-        + redondeo(x : float) : float
+        + redondeo(itemPrice : float) : float
     }
 
     class Inventory {
@@ -53,6 +52,7 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
 
         + GroceryShop(inventory : Inventory, sc : Scanner)
         + buyMenu() : void
+        * finishCart() : void
     }
 
     class Menu {
@@ -74,6 +74,8 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
 
         + searchItem() : void
         + filterItems() : void
+
+        + prettyExit() : void
     }
 
 

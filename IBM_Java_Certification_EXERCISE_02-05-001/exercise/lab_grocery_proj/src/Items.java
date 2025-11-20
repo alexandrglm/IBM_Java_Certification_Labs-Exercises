@@ -35,7 +35,7 @@ public class Items{
     // constructor
     public Items(String itemName, String itemPrice, String itemQuantity) {
 
-        this.itemName = itemPrice;
+        this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemQuantity = itemQuantity;
 
@@ -92,24 +92,10 @@ public class Items{
 
     // Redondeo
 
-    public float redondeo(float itemPrice) {
+    public static float redondeo(float itemPrice) {
 
-        // pending review itenm
-        return Math.round(itemPrice);
+        return Math.round(itemPrice * 100f) / 100f;
 
     } 
-
-    // String (re)Parser
-    //PENDING!
-
-    public String stringParser(String itemName) {
-
-        return null;
-
-    }
-
-
-
-
 
 }

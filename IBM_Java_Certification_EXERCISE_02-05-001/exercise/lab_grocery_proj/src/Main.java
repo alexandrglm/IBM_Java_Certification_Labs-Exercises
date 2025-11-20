@@ -7,6 +7,7 @@
 */
 import java.util.Scanner;
 
+
 public class Main {
 
 
@@ -16,33 +17,22 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         try {
-            
-            Menu menu = new Menu();
+
+            // Task1 -2 
             Inventory inventory = new Inventory();
-            GroceryShop shop = new GroceryShop(sc);
 
-
-            // Publics accesed 
-            menu.mainMenu();
-            // PRIVATES (won't be invoked here, but as for referenvce)
-            // menu.inventoryMenu()
+            // Task3
+            GroceryShop shop = new GroceryShop(inventory, sc);
+            Menu menu = new Menu(inventory, shop, sc);
             
+            // Start App
+            menu.mainMenu();
 
 
-
-        // Must includes more case exceptions
         } catch (Exception e) {
 
-            System.out.println("[ERROR] -> " +  e);
-
-        } finally {
-
-            sc.close();
+            System.out.println("\n[Exception] -> " + e.getMessage());
 
         }
-
-
-
     }
-
 }
