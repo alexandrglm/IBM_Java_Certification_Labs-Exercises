@@ -15,7 +15,7 @@
 
 There are **two implementations** for managing the inventory:
 
-### 1.  `ArrayList<>` + Getters/Setters**  Approach
+### 1.  `ArrayList<>` + Getters/Setters Approach
 
 ![](./01_Using_ArrayList/05-001_klasses_all.png)
 
@@ -23,7 +23,11 @@ There are **two implementations** for managing the inventory:
    -    Standard OOP approach with GETTERs (`getItemName()`, `getItemPrice()`, `getItemQuantity()`), and their corresponding setters.  
    -    Easy to extend and maintain, high flexibility, but slightly heavier in memory.
 
-### 2.  **Data Matrix (`String[][]`)**    Approach
+---
+
+### 2.  Data Matrix (`String[][]`)  Approach
+
+![](./01_Using_ArrayList/05-001_klasses_all.png)
 
    -    Inventory is stored as a fixed-size 2D array (`items[25][3]`).  
    -    Eliminates `Items` objects and most getters/setters, but ...  
@@ -54,14 +58,6 @@ There are **two implementations** for managing the inventory:
 | Task 12: Filter items below a certain price | `Inventory.filterByPrice()` |
 | Task 13: Apply discounts and calculate final bill | `GroceryShop.finishCart()` |
 | Task 14: Inventory management (create/update/delete/reduce stock) | `Inventory` |
-
----
-
-## Notes
-
-- The **ArrayList version** is more object-oriented and maintainable.  
-- The **matrix version** reduces object overhead but still requires individual getters and update methods for each item.  
-- Both implementations support the full functionality of the Grocery Shop exercise: inventory management, purchasing, search, filtering, and discount calculation.
 
 
 ---
