@@ -19,6 +19,7 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
 
         + priceParser() : float
         + quantityParser() : int
+        + stingParser() : String
         + redondeo(x : float) : float
     }
 
@@ -30,8 +31,8 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
 
         + createItem(itemName : String, price : String, quantity : String) : void
         + readAllInventory() : void
-        + findByName(itemName : String) : int
-        + findByIndex(choiceIdx : int) : int
+        + findByName(choiceName : String) : int
+        + findByIndex(choiceIndex : int) : int
         + deleteItem(idx : int) : void
 
         + get(idx : int) : Item
