@@ -76,6 +76,7 @@ package "KLASSES, IBM Java > 2 > 05-001 Grocery Store Exercise" {
         + filterItems() : void
 
         + {static} prettyExit() : void
+        + {static} regexValidation(input : String) : boolean
     }
 
 

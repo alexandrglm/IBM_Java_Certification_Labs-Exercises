@@ -6,6 +6,7 @@
  *
 */
 
+import java.rmi.UnexpectedException;
 import java.util.Scanner;
 
 public class Menu {
@@ -27,7 +28,7 @@ public class Menu {
     // methods
 
     // mainMenu() - public, accessed by Main
-    public void mainMenu() {
+    public void mainMenu() throws NotExpectedException {
 
         /*
         1. Administrar inventarios
@@ -90,8 +91,8 @@ public class Menu {
                     
                 } else {
 
-                    System.out.println("\n\n   [!]  Please, enter a valid option!");
-                    // pending a continue statement
+                    throw new UnexpectedException("\n\n   [!]  Please, enter a valid (numeric) option!");
+
                 }
 
 
@@ -108,7 +109,7 @@ public class Menu {
 
     // inventoryMenu(), private, accessed by others (Menu, Inventory) but through this Menu class (1 to many)
     // TASK 4  - while
-    private void inventoryMenu() {
+    private void inventoryMenu() throws NotExpectedException {
 
         /*
             1. Create item
@@ -170,8 +171,7 @@ public class Menu {
 
                 } else {
 
-                    System.out.println("\n\n   [!]  Please, enter a valid option!");
-                    // pending a continue statement
+                    throw new UnexpectedException("\n\n   [!]  Please, enter a valid (numeric) option!");
                 }
 
             } catch (Exception e) {
@@ -188,12 +188,16 @@ public class Menu {
     // METHODS like CRUD
     
     // createItem()
-    public void createItem(){
+    public void createItem() throws NotExpectedException, RegexValidationException{
 
         System.out.println("\n\n INVENTORY TOOLS:   Add new product");
         
         System.out.println("\n   -> Product Name? : ");
+        
         String choiceName = sc.nextLine();
+
+        regexValidation(choiceName);
+        
         if(choiceName.toUpperCase().strip().contains("EXIT")){
         
             prettyExit();
@@ -203,9 +207,11 @@ public class Menu {
 
         System.out.println("\n   -> Product Price (includes .00 decimals) ? : ");
         String choicePrice = sc.nextLine();
+        regexValidation(choicePrice);
 
         System.out.println("\n   -> How many single products will be added to stock  ? : ");
         String choiceQuantity = sc.nextLine();
+        regexValidation(choiceQuantity);
 
         // confirmation to write data
         System.out.println("\n\n[WRITE DATA CONFIRMATION]\n");
@@ -217,7 +223,7 @@ public class Menu {
         String choiceConfirmation = sc.nextLine();
         if(!choiceConfirmation.toUpperCase().contains("Y")) {
         
-            System.out.println("\n Operation Cancelled\n");
+            prettyExit();
             inventoryMenu();
         
         } else {
@@ -232,11 +238,13 @@ public class Menu {
     }
 
     // readItem()
-    public void readItem(){
+    public void readItem() throws NotExpectedException, RegexValidationException {
         
         System.out.println("\n\n INVENTORY TOOLS:   Find ONE Item");
         System.out.println("\n   -> Type the product name: ");
         String choiceName = sc.nextLine();
+
+        regexValidation(choiceName);
 
         if(choiceName.toUpperCase().strip().contains("EXIT")){
         
@@ -269,7 +277,7 @@ public class Menu {
     }
     
     // readItems()
-    public void readItems() {
+    public void readItems() throws NotExpectedException {
 
         System.out.println("\n\n INVENTORY TOOLS:   Show Full Inventory");
         inventory.readAllInventory();
@@ -280,13 +288,14 @@ public class Menu {
     }
 
     // updateItems()
-    public void updateItem(){
+    public void updateItem() throws NotExpectedException, RegexValidationException {
 
         System.out.println("\n\n INVENTORY TOOLS:   Update an Item");
         inventory.readAllInventory();
         System.out.println("\n   -> Type the item number to update: ");
         
         String choiceUpdate = sc.nextLine();
+        regexValidation(choiceUpdate);
         
         if(choiceUpdate.toUpperCase().strip().contains("EXIT")){
         
@@ -313,6 +322,8 @@ public class Menu {
         System.out.print("New name [" + item.getItemName() + "]: ");
         String choiceNewName = sc.nextLine().strip();
 
+        regexValidation(choiceNewName);
+
         if (!choiceNewName.isEmpty()) {
 
             item.setItemName(choiceNewName);
@@ -321,6 +332,7 @@ public class Menu {
         
         System.out.print("New price [" + item.getItemPrice() + " €]: ");
         String newPrice = sc.nextLine().strip();
+        regexValidation(newPrice);
         
         if (!newPrice.isEmpty()) {
         
@@ -330,6 +342,7 @@ public class Menu {
         
         System.out.print("New quantity [" + item.getItemQuantity() + " units]: ");
         String newQuantity = sc.nextLine().strip();
+        regexValidation(newQuantity);
 
         if (!newQuantity.isEmpty()) {
         
@@ -343,7 +356,7 @@ public class Menu {
     }
 
     // deleteItem()
-    public void deleteItem(){
+    public void deleteItem() throws NotExpectedException, RegexValidationException {
 
         System.out.println("\n\n INVENTORY TOOLS:   Delete a product");
         inventory.readAllInventory();
@@ -351,6 +364,9 @@ public class Menu {
         System.out.println("\n Type the item number to be deleted: ");
 
         String choiceDelete = sc.nextLine();
+
+        regexValidation(choiceDelete);
+
         if(choiceDelete.toUpperCase().strip().contains("EXIT")){
         
             prettyExit();
@@ -390,11 +406,13 @@ public class Menu {
 
 
     // searchItem()
-    public void searchItem(){
+    public void searchItem() throws RegexValidationException {
 
         System.out.println("\n\n INVENTORY TOOLS:   Search Items\n");
         System.out.println("\n   -> Type search term: ");
         String searchTerm = sc.nextLine();
+
+        regexValidation(searchTerm);
 
         if(searchTerm.toUpperCase().strip().contains("EXIT")) {
 
@@ -444,6 +462,20 @@ public class Menu {
 
     }
 
+    // Regex Validation
+    public static boolean regexValidation(String input) throws RegexValidationException {
+
+        String regexValidation = "^[a-zA-Z 0-9.]+$";
+        
+        if(!input.matches(regexValidation)) {
+
+            throw new RegexValidationException("\n[!] Please, use alhpanumeric values (a~Z, 0-9) ");
+    
+        }
+        
+        return true;
+
+    }
 
     // ExitMenusPretty func
     public static void prettyExit() {

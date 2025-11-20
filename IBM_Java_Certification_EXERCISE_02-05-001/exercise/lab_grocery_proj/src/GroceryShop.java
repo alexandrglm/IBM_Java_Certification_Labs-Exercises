@@ -2,7 +2,7 @@
  * IBM Java Certification > Course 2 'Java Beginners'
  * Module 5 - Grading Exercise 1, Grocery Store
  * 
- * 03 - GroceryStore
+ * 03 - GroceryShop
  *
 */
 
@@ -29,7 +29,7 @@ public class GroceryShop {
     // methods
 
     // buyMenu()
-    public void buyMenu() {
+    public void buyMenu() throws RegexValidationException {
 
         float totalBill = 0.0f;
         ArrayList<String> cartList = new ArrayList<>();
@@ -41,6 +41,8 @@ public class GroceryShop {
             
             System.out.println("\n  - Enter Item name / Type 'Complete' to finish cart / Type 'Exit' to cancel: ");
             String itemChoice = sc.nextLine().strip();
+
+            Menu.regexValidation(itemChoice);
             
             // Task - Exit Condition
             if(itemChoice.toUpperCase().contains("EXIT")) {
@@ -81,12 +83,12 @@ public class GroceryShop {
             
             
             // Task 8 - Get chosen item qty
-            System.out.println("\n - How many " + item.getItemName() + " do you want?: ");
+            System.out.println("\n - Enter '" + item.getItemName() + "' units: ");
             
             int parsedQuantity;
             
             try {
-            
+
                 parsedQuantity = Integer.parseInt(sc.nextLine().strip());
                 
                 // Numeric > 0 validation
@@ -123,6 +125,8 @@ public class GroceryShop {
             // Task 14, Redece Stock (Before confirmation) Part 1
             System.out.println("\nAdd " + parsedQuantity + "x " + item.getItemName() + " to cart? (Yes/No): ");
             String confirmation = sc.nextLine().strip();
+
+            Menu.regexValidation(confirmation);
             
             if (!confirmation.toUpperCase().contains("Y")) {
                 
