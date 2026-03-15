@@ -1,0 +1,157 @@
+alexander@hostname:~/Desktop/repo/IBM_Java_Certification_Labs-Exercises/Course_03_Lab_01-008_CaseStudy1_LeaveSystem_PARclear && java HumanResourcesMenuTest
+
+ /// HR SYSTEM: CONSTRUCTORS & OBJECTS TEST ///
+
+1. Create New Employee (PARAMETERISED, All-Args)
+2. Create New Leave Request (DEFAULT)
+3. Create Quick Vacation Request (PARAMETERISED)
+4. Clone a Request (COPY CONSTURCTOR)
+5. List All Employees
+6. List All Leave Requests
+0. Exit
+
+Select an option: 5
+
+ /// EMPLOYEE LIST ///
+
+Employees EMPTY list! Try creating one!
+
+1. Create New Employee (PARAMETERISED, All-Args)
+2. Create New Leave Request (DEFAULT)
+3. Create Quick Vacation Request (PARAMETERISED)
+4. Clone a Request (COPY CONSTURCTOR)
+5. List All Employees
+6. List All Leave Requests
+0. Exit
+
+Select an option: 6
+
+ /// LEAVE REQUESTS LIST ///
+
+EMPTY Leave Request list!
+
+1. Create New Employee (PARAMETERISED, All-Args)
+2. Create New Leave Request (DEFAULT)
+3. Create Quick Vacation Request (PARAMETERISED)
+4. Clone a Request (COPY CONSTURCTOR)
+5. List All Employees
+6. List All Leave Requests
+0. Exit
+
+Select an option: 1
+Enter ID: 2331
+Enter Name: Pepito Pérez
+Enter Area: Maths
+Enter Email: pepito@perez.com
+New Employee record added successfully!
+
+1. Create New Employee (PARAMETERISED, All-Args)
+2. Create New Leave Request (DEFAULT)
+3. Create Quick Vacation Request (PARAMETERISED)
+4. Clone a Request (COPY CONSTURCTOR)
+5. List All Employees
+6. List All Leave Requests
+0. Exit
+
+Select an option: 1
+Enter ID: 23332
+Enter Name: Juanito López
+Enter Area: Programatics
+Enter Email: juanito@lopez.com
+New Employee record added successfully!
+
+1. Create New Employee (PARAMETERISED, All-Args)
+2. Create New Leave Request (DEFAULT)
+3. Create Quick Vacation Request (PARAMETERISED)
+4. Clone a Request (COPY CONSTURCTOR)
+5. List All Employees
+6. List All Leave Requests
+0. Exit
+
+Select an option: 5
+
+ /// EMPLOYEE LIST ///
+
+Employee ID: 2331
+Name: Pepito Pérez
+Department: Maths
+E-mail: pepito@perez.com
+
+Employee ID: 23332
+Name: Juanito López
+Department: Programatics
+E-mail: juanito@lopez.com
+
+1. Create New Employee (PARAMETERISED, All-Args)
+2. Create New Leave Request (DEFAULT)
+3. Create Quick Vacation Request (PARAMETERISED)
+4. Clone a Request (COPY CONSTURCTOR)
+5. List All Employees
+6. List All Leave Requests
+0. Exit
+
+Select an option: 2
+Select employee by index (1 to 2):
+1
+Request ID: 000959
+Start Date (YYYY/MM/DD): 2026/05/15
+End Date (YYYY/MM/DD): 2026/05/24
+Reason: Trimestral Holidays
+Request created with 'Pending' status.
+
+1. Create New Employee (PARAMETERISED, All-Args)
+2. Create New Leave Request (DEFAULT)
+3. Create Quick Vacation Request (PARAMETERISED)
+4. Clone a Request (COPY CONSTURCTOR)
+5. List All Employees
+6. List All Leave Requests
+0. Exit
+
+Select an option: 3
+Select employee index:
+2
+Quick Vacation Request generated successfully!
+
+1. Create New Employee (PARAMETERISED, All-Args)
+2. Create New Leave Request (DEFAULT)
+3. Create Quick Vacation Request (PARAMETERISED)
+4. Clone a Request (COPY CONSTURCTOR)
+5. List All Employees
+6. List All Leave Requests
+0. Exit
+
+Select an option: 6
+
+ /// LEAVE REQUESTS LIST ///
+
+Request ID: 959
+Employee:
+Employee ID: 2331
+Name: Pepito Pérez
+Department: Maths
+E-mail: pepito@perez.com
+Start Date: 2026/05/15
+End Date: 2026/05/24
+Status: Pending
+Reason: Trimestral Holidays
+
+Request ID: 33
+Employee:
+Employee ID: 23332
+Name: Juanito López
+Department: Programatics
+E-mail: juanito@lopez.com
+Start Date: 2026/05/15
+End Date: 2026/05/25
+Status: Pending
+Reason: Vacaciones Trimestrales
+
+1. Create New Employee (PARAMETERISED, All-Args)
+2. Create New Leave Request (DEFAULT)
+3. Create Quick Vacation Request (PARAMETERISED)
+4. Clone a Request (COPY CONSTURCTOR)
+5. List All Employees
+6. List All Leave Requests
+0. Exit
+
+Select an option:
