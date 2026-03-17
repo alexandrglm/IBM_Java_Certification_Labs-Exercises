@@ -1,4 +1,4 @@
-# Case Study: Leave Tracking System
+# 01-008 Case Study: Leave Tracking System, Part 1
 
 ## Object-Oriented Programming Basics
 
