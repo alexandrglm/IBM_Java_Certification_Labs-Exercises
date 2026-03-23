@@ -77,6 +77,23 @@ public class HumanResourcesMenuTest {
 
     }
 
+    // PART 3, D)   SYNCRONISE MAPS ARRAYS ALL
+    private static HashMap<Integer, SolicitaLibrar> mapaPeticiones = new HashMap<>();
+    
+    public static void addMapaPeticiones(SolicitaLibrar peticion) {
+
+        mapaPeticiones.put( peticion.getSolicitudId(), peticion );
+
+
+    }
+
+    public static SolicitaLibrar getMapaPeticiionesPorId(int idPeticion) {
+
+        return mapaPeticiones.get(idPeticion);
+
+    }
+
+
 
     /*
     ARRAYS -> This is How Arrays must be implemented
@@ -130,6 +147,37 @@ public class HumanResourcesMenuTest {
         }
 
     }
+    // FROM PART 3, C) 
+    public static void eliminarAreaSiNoHaySolicitudesPendientes(String area) {
+
+        boolean todaviaHayPendientes = false;
+
+
+        for (Empleado empleado : listaEmpleados) {
+
+            if (empleado.getEmpleadoArea().equals(area)) {
+                
+                for (SolicitaLibrar peticion : empleado.getHistorialPeticiones()) {
+                    
+                    if ("Pending".equals(peticion.getSolicitudEstado())) {
+                    
+                        todaviaHayPendientes = true;
+                        break;
+                    
+                    }
+                }
+            }
+            if (todaviaHayPendientes){
+                break;
+            }
+        }
+
+        if ( !todaviaHayPendientes ) {
+
+            areasConSolicitudesPendientes.remove(area);
+        
+        }
+    }
     public static boolean tienePeticionesPendientes( String area ) {
 
         return areasConSolicitudesPendientes.contains(area);
@@ -158,6 +206,7 @@ public class HumanResourcesMenuTest {
             System.out.println("   6. List All Leave Requests");
             System.out.println("   7. Process All Requests");
             System.out.println("   8. Check Requests Historial");
+            System.out.println("   9. Remove an Employee data BY ID (SYNCRHONISED ArrayList HashMap");
             System.out.println("     0. Exit");
             System.out.print("\n Select an option: ");
 
@@ -227,14 +276,17 @@ public class HumanResourcesMenuTest {
                     // NON-ZERO BASED FORCED AGAIN AS IN LAbs 01-003/01-006
                     try {
 
-
-                        System.out.println("Select employee by index (1 to " + listaEmpleados.size() + "):");
-                        int empIdx = Integer.parseInt(scanner.nextLine()) - 1;
+                        // CAMBIO CLAVE: Pedimos el ID real para que el Mapa funcione
+                        System.out.print("Enter Employee ID: ");
+                        int idBuscado = Integer.parseInt(scanner.nextLine());
+                        
                         // PART 3, CAMBIAMOS A METODOS MAPA y VALIDACIONES
-                        Empleado empleado = getMapaEmpleadoPorId(empIdx);
+                        // Usamos el ID que el usuario acaba de teclear
+                        Empleado empleado = getMapaEmpleadoPorId(idBuscado);
+                        
                         if ( empleado == null ) {
 
-                            System.out.println("\n   Employee with ID " + empIdx + " not found!");
+                            System.out.println("\n   Employee with ID " + idBuscado + " not found!");
                             break;
 
                         }
@@ -257,8 +309,7 @@ public class HumanResourcesMenuTest {
                         /**
                          * As for the changes made to superclass as abstract,
                          * now .. new SolicitaLibrar WONT WORK!
-                         * 
-                         */
+                         * */
                         System.out.println("\nSelect Request Type:\n\n   1. Sick Leave\n   2. Vacation\n   3. Maternity ");
                         String tipoSolicitud = scanner.nextLine();
 
@@ -278,13 +329,15 @@ public class HumanResourcesMenuTest {
                             System.out.print("Is it paid? (true/false): ");
                             boolean sonPagadas = Boolean.parseBoolean(scanner.nextLine());
 
-                            nuevaPeticion = new Vacaciones(reqId, listaEmpleados.get(empIdx), start, end, sonPagadas);
+                            // CAMBIO: Usamos el objeto 'empleado' que ya validamos arriba
+                            nuevaPeticion = new Vacaciones(reqId, empleado, start, end, sonPagadas);
 
                         
                         
                         } else if ( "3".equals(tipoSolicitud) ) {
 
-                            nuevaPeticion = new Maternidad(reqId, listaEmpleados.get(empIdx), start, end); 
+                            // CAMBIO: Usamos el objeto 'empleado' que ya validamos arriba
+                            nuevaPeticion = new Maternidad(reqId, empleado, start, end); 
                         
                         
                         } else {
@@ -303,6 +356,9 @@ public class HumanResourcesMenuTest {
                             // 3. REGISTRO (ACTUALIZA) EN HASHSET
                             actualizarAreasConSolicitudesPendientes();
 
+                            // 4. REGISTRO EN MAPA GLOBAL DE PETICIONES (NUEVO)
+                            addMapaPeticiones(nuevaPeticion);
+
                             
                             System.out.println("New Request added succesfully!");
                         
@@ -310,12 +366,15 @@ public class HumanResourcesMenuTest {
 
                     } catch (Exception e) {
                         
+                        // Mantenemos tu mensaje de error original
                         System.out.println("\n   Error creating request, employee index not found!");
                     }
                     
                     break;
-
                 
+
+
+
                 // TESTING EMPLOYEE COPY METHOD 2.2.2. FROM Empleado cklass
                 // MODIFIED SINCE PART 2, ABSTRACT to NEW VACATION!
                 // AS A QUICK VACATION
@@ -329,35 +388,40 @@ public class HumanResourcesMenuTest {
                     }
                     
                     try {
+                        // SEÑAL 1: Pedimos el ID REAL, no el índice de la lista
+                        System.out.print("Enter Employee ID for Quick Vacation: ");
+                        int idBuscado = Integer.parseInt(scanner.nextLine());
 
-                        System.out.println("Select employee index (1 to " + listaEmpleados.size() + "):");
-                        int idx = Integer.parseInt(scanner.nextLine()) - 1;
+                        // SEÑAL 2: Búsqueda directa en el MAPA
+                        Empleado empleado = getMapaEmpleadoPorId(idBuscado);
 
-                        // VALIDACION DE INDICE EXISTENTE
-                        if (idx >= 0 && idx < listaEmpleados.size()) {
-
-                            // 1. 
-                            Empleado empleado = listaEmpleados.get(idx);
+                        // VALIDACION DE OBJETO EXISTENTE
+                        if (empleado != null) {
 
                             // 2. DIRECTAMENTE TRRABAJAR CON EL OBJETO VACACIONES
+                            // Usamos 'empleado' que ya hemos recuperado del mapa
                             Vacaciones vacacionesPlantilla = new Vacaciones( 
                                 (int)(Math.random()*1000), 
-                                listaEmpleados.get(idx),
+                                empleado,
                                 "2026/01/01",
                                 "2026/01/15",
                                 true
                             );
 
                             // 3. REGISTRAR CORRECTAMENTE LAS SOLICITUDES EN TODAS LAS COLLECTIONS
+                            // Añadimos el registro en el MAPA GLOBAL de peticiones
                             addSolicitudPendiente(vacacionesPlantilla);
                             empleado.addPeticion(vacacionesPlantilla);
                             actualizarAreasConSolicitudesPendientes();
+                            
+                            // PEEEERRO TAMBIEN Registro en el mapa de peticiones para el Case 8
+                            addMapaPeticiones(vacacionesPlantilla);
                             
                             System.out.println("Quick Vacation Request generated successfully!");
 
                         } else {
 
-                            System.out.println("\n    Employee  (by its index: " + (idx + 1) + ") does not exist!");
+                            System.out.println("\n    Employee with ID " + idBuscado + " does not exist!");
 
                         }
 
@@ -374,7 +438,6 @@ public class HumanResourcesMenuTest {
                     break;
 
 
-
                 
                 // 4. Clone a Request (COPY CONSTURCTOR)
                 // FROM PART 2, ADDED COPY CONSTRUCTORS TO EACH SUBCLASSES
@@ -389,47 +452,54 @@ public class HumanResourcesMenuTest {
 
                     try {
                         
-                        System.out.println("Select request index to clone:");
-                        int cloneIdx = Integer.parseInt(scanner.nextLine()) - 1;
+                        // SEÑAL 1: Pedimos el ID REAL del empleado
+                        System.out.print("Enter Employee ID to find original request: ");
+                        int idBuscado = Integer.parseInt(scanner.nextLine());
 
-                        Empleado empleadoOriginalValidar = getMapaEmpleadoPorId(cloneIdx);
+                        // SEÑAL 2: Buscamos al empleado en el MAPA
+                        Empleado empleadoOriginalValidar = getMapaEmpleadoPorId(idBuscado);
 
-                        // EJERCICIO PENDIENTE AQUI!
-                        // 2026 03 20, 20:35
-                        // SEGUIR DESDE AQUI
-                    
-                        if (empleadoOriginalValidar == null && empleadoOriginalValidar.getHistorialPeticiones().isEmpty() ) {
+                        // VALIDACIÓN: ¿Existe el empleado y tiene peticiones?
+                        if (empleadoOriginalValidar == null || empleadoOriginalValidar.getHistorialPeticiones().isEmpty() ) {
 
-                            System.out.print("Employee not found or has no requests!");
+                            System.out.println("Employee not found or has no requests!");
                             break;
 
                         }
 
-                        System.out.println("Select request index from: " + empleadoOriginalValidar.getEmpleadoName() + "(1 to " + empleadoOriginalValidar.getHistorialPeticiones().size() + ") :");
-                        int peticionIdx = Integer.parseInt(scanner.nextLine());
+                        // SEÑAL 3: Elegimos la petición de SU historial (aquí sí usamos índice de su lista privada)
+                        System.out.println("Select request index from: " + empleadoOriginalValidar.getEmpleadoName() + " (1 to " + empleadoOriginalValidar.getHistorialPeticiones().size() + ") :");
+                        int peticionIdx = Integer.parseInt(scanner.nextLine()) - 1;
 
+                        // Obtenemos la original directamente de la lista del empleado
                         SolicitaLibrar original = empleadoOriginalValidar.getHistorialPeticiones().get(peticionIdx);
+                        
+                        // CLONACIÓN (Polimorfismo)
                         SolicitaLibrar copia = original.noSeQueEresPeroTeDejoClonar();
 
+                        // Le damos un ID nuevo para que no choque en el Mapa Global
                         copia.setSolicitudId( original.getSolicitudId() + 1000 );
 
-                        // PART 4, TRIPLE REGISTRATION AGAIN
+                        // SEÑAL 4: EL REGISTRO TRIPLE (Consistencia)
+                        // 1. Al historial del empleado
                         empleadoOriginalValidar.addPeticion(copia);
 
+                        // 2. A la cola de trabajo (Queue)
                         addSolicitudPendiente(copia);
 
+                        // 3. Al radar de áreas (HashSet)
                         actualizarAreasConSolicitudesPendientes();
+                        
+                        // 4. PEEEERO TAMIEN AL MAPA GLOBAL DE PETICIONES (Para el Case 8)
+                        addMapaPeticiones(copia);
 
                         System.out.println("Request cloned! (New ID: " + copia.getSolicitudId() + ")");
                         System.out.println("Type of cloned object: " + copia.getClass().getSimpleName());
 
-                        
-
                     } catch (Exception e) {
                         
-                        System.out.println("This request has no valid Employee to clone!: " + e );
+                        System.out.println("Error during cloning process: " + e );
 
-                    
                     }
                     
                     break;
@@ -540,13 +610,16 @@ public class HumanResourcesMenuTest {
 
                         if ( peticion != null ) {
 
+                            String areaAfectada = peticion.getEmpleado().getEmpleadoArea();
+
                             peticion.procesarSolicitud();
+
+                            eliminarAreaSiNoHaySolicitudesPendientes(areaAfectada);
+
                         }
 
 
                     }
-
-                    actualizarAreasConSolicitudesPendientes();
 
                     System.out.println("All requests was proccessed succesfully!");
                     break;
@@ -554,43 +627,83 @@ public class HumanResourcesMenuTest {
                 
 
                 
-                // FROM PART 2, INNER CLASSES -> CHANGES HISTORIAL
-
+                // FROM PART 3, D) SYNCRONISE MAPS -> DIRECT ACCESS BY REQUEST ID
                 case "8":
                     
-                    if ( mapaEmpleados.isEmpty() ) {
+                    if ( mapaPeticiones.isEmpty() ) {
                         
-                            System.out.println("\n No requests to check history (due to employee NOT found)!");
+                            System.out.println("\n No requests found in the global system!");
                             break;
                     }
 
                     try {
 
-                        // 1.  SELECT  THE EMPLOYUEE
-                        System.out.print("Enter Employee ID: ");
-                        int idBuscado = Integer.parseInt(scanner.nextLine());
+                        // 1.   SELECT THE REQUEST DIRECTLY
+                        System.out.print("Enter Request ID to view history: ");
+                        int idPeticionBuscada = Integer.parseInt(scanner.nextLine());
                         
-                        Empleado empleadoOriginalValidar = getMapaEmpleadoPorId(idBuscado);
+                        // 2. DIRECT ACCESS USING THE MAP METHOD
+                        SolicitaLibrar peticion = getMapaPeticiionesPorId(idPeticionBuscada);
 
-                        if ( empleadoOriginalValidar == null || empleadoOriginalValidar.getHistorialPeticiones().isEmpty()  ) {
+                        if ( peticion != null ) {
                             
-                            System.out.println("\n Employee not found or has no requests!");
-                            break;
-                        
+                            // PART 2, INNER CLASSES -> SHOW HISTORY
+                            peticion.mostrarHistorial();
+
+                        } else {
+                            
+                            System.out.println("\n Request ID " + idPeticionBuscada + " not found!");
                         }
-
-                        
-                    
-                        System.out.println("\n Select request index to view history (1 to " + empleadoOriginalValidar.getHistorialPeticiones().size() + "):");
-                        int histIdx = Integer.parseInt(scanner.nextLine()) - 1;
-
-                        SolicitaLibrar peticion = empleadoOriginalValidar.getHistorialPeticiones().get(histIdx);
-                        
-                        peticion.mostrarHistorial();
 
                     } catch (Exception e) {
                         
-                        System.out.println("\n Invalid Petition index error!: " + e);
+                        System.out.println("\n Invalid Request ID error!: " + e);
+                    }
+                    
+                    break;
+
+
+
+                // FROM PART 3, D) MAPS -> REMOVE EMPLOYEE
+                case "9":
+                    
+                    if (mapaEmpleados.isEmpty()) {
+
+                        System.out.println("\n   No employees to remove!");
+                        break;
+                    
+                    }
+
+                    try {
+
+                        System.out.print("Enter Employee ID to REMOVE: ");
+                        int eliminarId = Integer.parseInt(scanner.nextLine());
+
+                        boolean eliminadoDelMapa = removeMapaEmpleado(eliminarId);
+
+                        if ( eliminadoDelMapa ) {
+                            
+                            // 1:   SYNCRHONISED ArrayList HashMap
+                            listaEmpleados.removeIf(empleado -> empleado.getEmpleadoId() == eliminarId);
+
+                            // PART 3, E) QUEUEs -> REMOVE PENDING REQUESTS FROM REMOVED EMPLOYEE
+                            peticionesPendientes.removeIf(peticion -> peticion.getEmpleado().getEmpleadoId() == eliminarId);
+
+                            // PART 3, D) SYNCRONISE MAPS -> REMOVE REQUESTS FROM GLOBAL MAP
+                            mapaPeticiones.entrySet().removeIf(entry -> entry.getValue().getEmpleado().getEmpleadoId() == eliminarId);
+
+                            actualizarAreasConSolicitudesPendientes();
+
+                            System.out.println("\n   Employee with ID " + eliminarId + " removed succesfully!");
+
+                        } else {
+                            
+                            System.out.println("\n   Employee ID not found!");
+                        }
+
+                    } catch (Exception e) {
+                        
+                        System.out.println("\n   Invalid input!: " + e);
                     }
                     
                     break;
