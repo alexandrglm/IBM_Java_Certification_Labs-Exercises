@@ -392,34 +392,44 @@ public class HumanResourcesMenuTest {
                         System.out.println("Select request index to clone:");
                         int cloneIdx = Integer.parseInt(scanner.nextLine()) - 1;
 
+                        Empleado empleadoOriginalValidar = getMapaEmpleadoPorId(cloneIdx);
+
                         // EJERCICIO PENDIENTE AQUI!
                         // 2026 03 20, 20:35
-                        // SEGUIR DESDE AQUI 
-                        empleado
+                        // SEGUIR DESDE AQUI
+                    
+                        if (empleadoOriginalValidar == null && empleadoOriginalValidar.getHistorialPeticiones().isEmpty() ) {
 
+                            System.out.print("Employee not found or has no requests!");
+                            break;
 
-                        SolicitaLibrar original = listaPeticiones.get(cloneIdx);
-                        Empleado empleadoOriginalValidar = original.getEmpleado();
-
-                        if (empleadoOriginalValidar != null && empleadoOriginalValidar.getEmpleadoId() != 0) {
-
-                            SolicitaLibrar copia = original.noSeQueEresPeroTeDejoClonar();
-
-                            copia.setSolicitudId(original.getSolicitudId() + 1000); 
-
-                            listaPeticiones.add(copia);
-
-                            System.out.println("Request cloned! (New ID: " + copia.getSolicitudId() + ")");
-                            System.out.println("Type of cloned object: " + copia.getClass().getSimpleName());
-
-                        } else {
-                            
-                            System.out.println("\nThis request has no valid Employee to clone!");
                         }
+
+                        System.out.println("Select request index from: " + empleadoOriginalValidar.getEmpleadoName() + "(1 to " + empleadoOriginalValidar.getHistorialPeticiones().size() + ") :");
+                        int peticionIdx = Integer.parseInt(scanner.nextLine());
+
+                        SolicitaLibrar original = empleadoOriginalValidar.getHistorialPeticiones().get(peticionIdx);
+                        SolicitaLibrar copia = original.noSeQueEresPeroTeDejoClonar();
+
+                        copia.setSolicitudId( original.getSolicitudId() + 1000 );
+
+                        // PART 4, TRIPLE REGISTRATION AGAIN
+                        empleadoOriginalValidar.addPeticion(copia);
+
+                        addSolicitudPendiente(copia);
+
+                        actualizarAreasConSolicitudesPendientes();
+
+                        System.out.println("Request cloned! (New ID: " + copia.getSolicitudId() + ")");
+                        System.out.println("Type of cloned object: " + copia.getClass().getSimpleName());
+
+                        
 
                     } catch (Exception e) {
                         
-                        System.out.println("Error cloning: Check the index or inputs.");
+                        System.out.println("This request has no valid Employee to clone!: " + e );
+
+                    
                     }
                     
                     break;
@@ -460,23 +470,48 @@ public class HumanResourcesMenuTest {
 
                 
                 
-                // TEST .toString() FRO SolicitaLibrar (AND the nested .toString from Empleado, IF WORKS WELL)
+                // TEST .toString() FROM SolicitaLibrar (AND the nested .toString from Empleado, IF WORKS WELL)
                 case "6":
                     
                     System.out.println("\n /// LEAVE REQUESTS LIST /// ");
 
-                    if ( ! listaPeticiones.isEmpty() ) {
-                    
-                        for (SolicitaLibrar peticion : listaPeticiones) {
-                        
-                            System.out.println(peticion.toString());
-                        
+
+                    // PART4, VALIDATRIOSN IN LISTAEMPLEADO
+                    if ( listaEmpleados.isEmpty() ) {
+
+                        System.out.println("\nNo employees registered, so no requests available!");
+                        break;
+                    }
+
+                    boolean tienePeticionesPendientes = false;
+
+                    for ( Empleado empleado : listaEmpleados ){
+
+                        // 1. SCAMOS EL PUTO HISTORIAL
+                        ArrayList<SolicitaLibrar> historialArrayList = empleado.getHistorialPeticiones();
+
+                        if ( ! historialArrayList.isEmpty() ) {
+
+                            tienePeticionesPendientes = true;
+
+                            System.out.println("\n   Requests for: " + empleado.getEmpleadoName() + " (ID: " + empleado.getEmpleadoId() + ")");
+
+
+                            for ( SolicitaLibrar peticion : historialArrayList ) {
+
+                                System.out.println( peticion.toString() );
+
+                            }
+
                         }
 
-                    } else {
 
-                        System.out.println("\nEMPTY Leave Request list!");
 
+                    }
+
+                    if ( ! tienePeticionesPendientes ) {
+                        
+                        System.out.println("\nNo requests found in any employee's history.");
                     }
                     
                     break;
@@ -490,49 +525,73 @@ public class HumanResourcesMenuTest {
 
                     System.out.println("\n /// PROCESSING ALL REQUESTS /// ");
 
-                    if ( listaPeticiones.isEmpty() ) {
+                    if ( ! getPeticionesPendientesEstado() ) {
 
                         System.out.println("Requests EMPTY list! Try creating one Leave Request!");
+                        break;
 
-                    } else {
+                    } 
 
-                        for ( SolicitaLibrar peticion : listaPeticiones  ) {
+
+                    while ( getPeticionesPendientesEstado() )  {
+
+
+                        SolicitaLibrar peticion = getAndRemoveSiguientePeticionPendiente();
+
+                        if ( peticion != null ) {
 
                             peticion.procesarSolicitud();
-
                         }
 
-                        System.out.println("All requests was proccessed succesfully!");
 
                     }
-                    
 
+                    actualizarAreasConSolicitudesPendientes();
+
+                    System.out.println("All requests was proccessed succesfully!");
                     break;
 
                 
 
                 
                 // FROM PART 2, INNER CLASSES -> CHANGES HISTORIAL
+
                 case "8":
                     
-                    if (listaPeticiones.isEmpty()) {
+                    if ( mapaEmpleados.isEmpty() ) {
                         
-                            System.out.println("No requests to check history!");
+                            System.out.println("\n No requests to check history (due to employee NOT found)!");
                             break;
                     }
 
                     try {
 
-                        System.out.println("Select request index to view history (1 to " + listaPeticiones.size() + "):");
+                        // 1.  SELECT  THE EMPLOYUEE
+                        System.out.print("Enter Employee ID: ");
+                        int idBuscado = Integer.parseInt(scanner.nextLine());
+                        
+                        Empleado empleadoOriginalValidar = getMapaEmpleadoPorId(idBuscado);
+
+                        if ( empleadoOriginalValidar == null || empleadoOriginalValidar.getHistorialPeticiones().isEmpty()  ) {
+                            
+                            System.out.println("\n Employee not found or has no requests!");
+                            break;
+                        
+                        }
+
+                        
+                    
+                        System.out.println("\n Select request index to view history (1 to " + empleadoOriginalValidar.getHistorialPeticiones().size() + "):");
                         int histIdx = Integer.parseInt(scanner.nextLine()) - 1;
 
-                        listaPeticiones.get(histIdx).mostrarHistorial();
+                        SolicitaLibrar peticion = empleadoOriginalValidar.getHistorialPeticiones().get(histIdx);
+                        
+                        peticion.mostrarHistorial();
 
                     } catch (Exception e) {
                         
-                        System.out.println(" Invalid Petition index!");
+                        System.out.println("\n Invalid Petition index error!: " + e);
                     }
-                    
                     
                     break;
                 
