@@ -21,7 +21,7 @@ public class Empleado implements Cloneable {
         this.empleadoName = null;
         this.empleadoArea = null;
         this.empleadoEmail = null;
-        this.listaPeticiones = new ArrayList<>();
+        this.listaPeticiones = new ArrayList<SolicitaLibrar>(listaPeticiones);
 
     }
     // 2.2 OVERCHARGED ALL-ARGS
@@ -32,7 +32,7 @@ public class Empleado implements Cloneable {
         this.empleadoName = empleadoName;
         this.empleadoArea = empleadoArea;
         this.empleadoEmail = empleadoEmail;
-        this.listaPeticiones = listaPeticiones;
+        this.listaPeticiones = new ArrayList<SolicitaLibrar>(listaPeticiones);
 
     }
     // PART 3, EL CONSTRUCTOR DE SIEMPRE, NECESARIO PARA EL MENU CASE "1"
@@ -54,7 +54,7 @@ public class Empleado implements Cloneable {
             this.empleadoArea = plantilla.empleadoArea;
             this.empleadoEmail = plantilla.empleadoEmail;
             this.diasLibresRestantes = plantilla.getDiasLibresRestantes();
-            this.listaPeticiones = new ArrayList<>(plantilla.listaPeticiones);
+            this.listaPeticiones = new ArrayList<SolicitaLibrar>(plantilla.listaPeticiones);
 
         }
     }
